@@ -14,7 +14,7 @@ async function connectToDatabase() {
     }
 
     // Create a new MongoDB client
-    const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+    const client = new MongoClient(url);
 
     // Task 1: Connect to MongoDB
     await client.connect();
