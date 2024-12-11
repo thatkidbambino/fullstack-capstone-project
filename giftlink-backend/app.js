@@ -44,7 +44,7 @@ app.use('/api/search', searchRoutes); // Search-related APIs
 app.use('/api/auth', authRoutes); // Authentication APIs
 
 // Global Error Handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   pinoLogger.error(`[${req.method}] ${req.originalUrl} - ${err.message}`);
   res.status(500).send('Internal Server Error');
 });
