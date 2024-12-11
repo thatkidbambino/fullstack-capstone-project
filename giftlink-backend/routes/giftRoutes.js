@@ -2,22 +2,15 @@
 
 const express = require("express");
 const router = express.Router();
-const connectToDatabase = require("../models/db"); // Import the database connection
-const { ObjectId } = require("mongodb"); // Import ObjectId for querying by ID
+const connectToDatabase = require("../models/db");
+const { ObjectId } = require("mongodb");
 
 // Fetch all gifts
 router.get("/", async (req, res) => {
     try {
-        // Connect to MongoDB
         const db = await connectToDatabase();
-
-        // Retrieve the "gifts" collection
         const collection = db.collection("gifts");
-
-        // Fetch all gifts
         const gifts = await collection.find({}).toArray();
-
-        // Return the fetched gifts
         res.status(200).json(gifts);
     } catch (e) {
         console.error("Error fetching gifts:", e);
@@ -28,16 +21,10 @@ router.get("/", async (req, res) => {
 // Fetch a gift by ID
 router.get("/:id", async (req, res) => {
     try {
-        // Connect to MongoDB
         const db = await connectToDatabase();
-
-        // Retrieve the "gifts" collection
         const collection = db.collection("gifts");
-
-        // Extract the ID from the request parameters
         const id = req.params.id;
 
-        // Find a specific gift by ID
         const gift = await collection.findOne({ _id: new ObjectId(id) });
 
         if (!gift) {
@@ -54,16 +41,14 @@ router.get("/:id", async (req, res) => {
 // Add a new gift
 router.post("/", async (req, res) => {
     try {
-        // Connect to MongoDB
+        if (!req.body.name || !req.body.description) {
+            return res.status(400).json({ error: "Missing required fields" });
+        }
+
         const db = await connectToDatabase();
-
-        // Retrieve the "gifts" collection
         const collection = db.collection("gifts");
-
-        // Insert the new gift
         const result = await collection.insertOne(req.body);
 
-        // Return the created gift
         res.status(201).json({ insertedId: result.insertedId });
     } catch (e) {
         console.error("Error adding gift:", e);

@@ -5,10 +5,25 @@ const express = require('express');
 const cors = require('cors');
 const pinoLogger = require('./logger');
 const connectToDatabase = require('./models/db');
+const pinoHttp = require('pino-http');
+
+// Route files
+const giftRoutes = require('./routes/giftRoutes');
+const searchRoutes = require('./routes/searchRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
-app.use("*", cors());
-const port = 3060;
+const port = process.env.PORT || 3060;
+
+// CORS Middleware
+if (process.env.NODE_ENV === 'production') {
+  app.use(cors({ origin: 'https://your-production-domain.com' })); // Restrict origins in production
+} else {
+  app.use("*", cors());
+}
+
+// Logger Middleware
+app.use(pinoHttp({ logger: pinoLogger }));
 
 // Connect to MongoDB
 connectToDatabase()
@@ -17,30 +32,21 @@ connectToDatabase()
   })
   .catch((e) => {
     console.error('Failed to connect to DB:', e.message);
-    process.exit(1); // Exit process on connection failure
+    process.exit(1); // Exit process if DB connection fails
   });
 
+// Middleware to parse JSON requests
 app.use(express.json());
 
-// Route files
-const giftRoutes = require('./routes/giftRoutes');
-const searchRoutes = require('./routes/searchRoutes');
-const pinoHttp = require('pino-http');
-const logger = require('./logger');
-const authRoutes = require('./routes/authRoutes');
-
-app.use(pinoHttp({ logger }));
-
-// Use Routes
-app.use('/api/gifts', giftRoutes);
-app.use('/api/search', searchRoutes);
-app.use('/api/auth', authRoutes);
+// Register Routes
+app.use('/api/gifts', giftRoutes); // Gift-related APIs
+app.use('/api/search', searchRoutes); // Search-related APIs
+app.use('/api/auth', authRoutes); // Authentication APIs
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-  console.error(err.message);
+  pinoLogger.error(`[${req.method}] ${req.originalUrl} - ${err.message}`);
   res.status(500).send('Internal Server Error');
-  next(); // Explicitly call next for linting compliance
 });
 
 // Health Check Endpoint

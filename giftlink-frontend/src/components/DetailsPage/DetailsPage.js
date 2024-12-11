@@ -10,14 +10,14 @@ function DetailsPage() {
     const [comments, setComments] = useState([]);
     const [error, setError] = useState('');
 
-    // Task 1: Check for authentication
+    // Check for authentication
     useEffect(() => {
-        if (!sessionStorage.getItem('authToken')) {
+        if (!sessionStorage.getItem('auth-token')) { // Ensure key matches backend implementation
             navigate('/app/login');
         }
     }, [navigate]);
 
-    // Task 2: Fetch gift details
+    // Fetch gift details
     useEffect(() => {
         const fetchGiftDetails = async () => {
             try {
@@ -36,12 +36,12 @@ function DetailsPage() {
         fetchGiftDetails();
     }, [productId]);
 
-    // Task 3: Scroll to the top on component mount
+    // Scroll to the top on component mount
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
-    // Task 4: Handle Back Click
+    // Handle Back Click
     const handleBackClick = () => {
         navigate(-1);
     };
@@ -61,14 +61,14 @@ function DetailsPage() {
             </button>
             <h1 className="gift-name">{gift.name}</h1>
 
-            {/* Task 5: Display Gift Image */}
+            {/* Display Gift Image */}
             {gift.image ? (
                 <img src={gift.image} alt={gift.name} className="product-image-large" />
             ) : (
                 <div className="placeholder-image">No Image Available</div>
             )}
 
-            {/* Task 6: Display Gift Details */}
+            {/* Display Gift Details */}
             <div className="gift-details">
                 <p><strong>Category:</strong> {gift.category}</p>
                 <p><strong>Condition:</strong> {gift.condition}</p>
@@ -77,7 +77,7 @@ function DetailsPage() {
                 <p><strong>Description:</strong> {gift.description}</p>
             </div>
 
-            {/* Task 7: Render Comments Section */}
+            {/* Render Comments Section */}
             <div className="comments-section">
                 <h2>Comments</h2>
                 {comments.length > 0 ? (
