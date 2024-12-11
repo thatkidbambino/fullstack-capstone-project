@@ -1,0 +1,7 @@
+{
+  "esversion": 8,
+  "node": true,
+  "strict": "global",
+  "unused": true,
+  "undef": true
+}
