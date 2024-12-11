@@ -17,10 +17,10 @@ const port = process.env.PORT || 3060;
 
 // CORS Middleware
 if (process.env.NODE_ENV === 'production') {
-  app.use(cors({ origin: 'https://your-production-domain.com' })); // Restrict origins in production
-} else {
-  app.use("*", cors());
-}
+    app.use(cors({ origin: 'https://matthewsolli-3060.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai' }));
+  } else {
+    app.use("*", cors());
+  }
 
 // Logger Middleware
 app.use(pinoHttp({ logger: pinoLogger }));
