@@ -3,5 +3,8 @@
   "node": true,
   "strict": "global",
   "unused": true,
-  "undef": true
+  "undef": true,
+  "globals": {
+    "next": true
+  }
 }
