@@ -22,6 +22,7 @@ function DetailsPage() {
         const fetchGiftDetails = async () => {
             try {
                 const response = await fetch(`/api/gifts/${productId}`);
+            
                 if (!response.ok) {
                     throw new Error('Failed to fetch gift details.');
                 }

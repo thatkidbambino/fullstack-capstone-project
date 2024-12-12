@@ -38,4 +38,7 @@ async function connectToDatabase() {
     }
 }
 
+console.log('Connecting to MongoDB:', process.env.MONGO_URL);
+
+
 module.exports = connectToDatabase;

@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
         const collection = db.collection("gifts");
         const id = req.params.id;
 
-        const gift = await collection.findOne({ _id: new ObjectId(id) });
+        const gift = await collection.findOne({ id: id });
 
         if (!gift) {
             return res.status(404).json({ error: "Gift not found" });
@@ -37,6 +37,7 @@ router.get("/:id", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch gift" });
     }
 });
+
 
 // Add a new gift
 router.post("/", async (req, res) => {
